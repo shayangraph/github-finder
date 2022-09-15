@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import UserResults from "../Component/users/UserResults";
 
 const Home = () => {
   return (
-   <div>
-     <h1 className='text-6xl'>Welcome</h1>
-   </div>
-  )
-}
+    <>
+      {/* search component */}
+      <UserResults />
+    </>
+  );
+};
 
-export default Home
+export default Home;
