@@ -10,7 +10,8 @@ const RepoList = ({ repos }) => {
           Latest Repositories
         </h2>
         {repos.map((repo) => {
-          <RepoItem key={repo.id} repo={repo} />;
+          <RepoItem repo={repo} key={repo.id} />;
+          
         })}
       </div>
     </div>
