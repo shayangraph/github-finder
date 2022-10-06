@@ -1,25 +1,28 @@
 import React, { useEffect, useContext } from "react";
-import {
-  FaCodepen,
-  FaStore,
-  FaUserFriends,
-  FaUsers,
-} from "react-icons/fa";
+import { FaCodepen, FaStore, FaUserFriends, FaUsers } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import GithubContext from "../Context/Github/GithubContext";
 import Spinner from "../Component/Spinner";
 import RepoList from "../Component/repos/RepoList";
+import { getUser, getUserRepos } from "../Context/Github/GithubAction";
 
 const User = () => {
-  const { getUser, user, loading, getUserRepos, repos } =
-    useContext(GithubContext);
+  const { user, loading, repos, dispatch } = useContext(GithubContext);
 
   const params = useParams();
   useEffect(() => {
-    getUser(params.login);
-    getUserRepos(params.login);
-  }, []);
+    dispatch({ type: "SET_LOADING" });
+    const getUserData = async () => {
+      const userData = await getUser(params.login);
+      dispatch({ type: "GET_USER", payload: userData });
+
+      const userRepoData = await getUserRepos(params.login);
+      dispatch({ type: "REPOS", payload: userRepoData });
+    };
+
+    getUserData();
+  }, [dispatch, params.login]);
 
   const {
     name,
@@ -160,7 +163,7 @@ const User = () => {
             </div>
           </div>
         </div>
-        <RepoList repos={repos}/>
+        <RepoList repos={repos} />
       </div>
     </>
   );
